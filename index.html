@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Simulador de Brecha Digital VR - Nico Teleco</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    
+    <script>
+      AFRAME.registerComponent('gestor-simulacion', {
+        init: function () {
+          const vAlta = document.querySelector('#video-alta');
+          const vMedia = document.querySelector('#video-media');
+          const vBaja = document.querySelector('#video-baja');
+          const audio = document.querySelector('#audio-clase');
+          const esfera = document.querySelector('#esfera-video');
+          const buffering = document.querySelector('#pantalla-buffering');
+          const panel = document.querySelector('#panel-red');
+          const consola = document.querySelector('#consola-mandos');
+          
+          let videoActual = vAlta;
+          let intervaloLag = null;
+          let isPausedManually = false;
+          let isBrechaActive = false;
+
+          const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          const source = audioCtx.createMediaElementSource(audio);
+          const filter = audioCtx.createBiquadFilter();
+          source.connect(filter);
+          filter.connect(audioCtx.destination);
+          filter.type = "lowpass";
+          filter.frequency.value = 20000;
+
+          function cambiarCalidad(nuevoVideo, label, freq) {
+            if (videoActual === nuevoVideo && !isBrechaActive) return;
+            nuevoVideo.currentTime = audio.currentTime;
+            esfera.setAttribute('src', '#' + nuevoVideo.id);
+            videoActual.pause();
+            videoActual = nuevoVideo;
+            filter.frequency.linearRampToValueAtTime(freq, audioCtx.currentTime + 0.5);
+            panel.setAttribute('value', label);
+            if (!isPausedManually) videoActual.play();
+          }
+
+          document.querySelector('#btn-start').addEventListener('click', function() {
+            audioCtx.resume();
+            videoActual.play();
+            audio.play();
+            
+            // HACK: Ocultamos el botón de inicio y MOSTRANOS la consola
+            this.setAttribute('visible', 'false');
+            this.classList.remove('interactivo');
+            consola.setAttribute('visible', 'true');
+            
+            // Añadimos la clase interactiva a los hijos de la consola para que el cursor los detecte ahora
+            const botones = consola.querySelectorAll('.oculto-inicial');
+            botones.forEach(b => b.classList.add('interactivo'));
+          });
+
+          document.querySelector('#btn-pause').addEventListener('click', function() {
+            if (isPausedManually) {
+              videoActual.play(); audio.play();
+              isPausedManually = false;
+              this.querySelector('a-text').setAttribute('value', 'Pausar');
+              this.setAttribute('color', '#FFA500');
+            } else {
+              videoActual.pause(); audio.pause();
+              isPausedManually = true;
+              this.querySelector('a-text').setAttribute('value', 'Reanudar');
+              this.setAttribute('color', '#AAAAAA');
+            }
+          });
+
+          document.querySelector('#btn-vol-mas').addEventListener('click', () => { audio.volume = Math.min(1.0, audio.volume + 0.2); });
+          document.querySelector('#btn-vol-menos').addEventListener('click', () => { audio.volume = Math.max(0.0, audio.volume - 0.2); });
+
+          document.querySelector('#btn-brecha').addEventListener('click', function() {
+            if (isBrechaActive) return;
+            isBrechaActive = true;
+            panel.setAttribute('color', '#FF0000');
+            cambiarCalidad(vMedia, 'CONEXION: INESTABLE\nCalidad: 360p\nAudio: Low-Bitrate', 1200);
+
+            intervaloLag = setInterval(() => {
+              if (isPausedManually) return;
+              let dado = Math.random();
+              if (dado > 0.75) { 
+                let tCorte = Date.now();
+                videoActual.pause(); audio.pause();
+                buffering.setAttribute('visible', 'true');
+                setTimeout(() => {
+                  if (!isPausedManually && isBrechaActive) {
+                    let salto = (Date.now() - tCorte) / 1000;
+                    audio.currentTime += salto; 
+                    videoActual.currentTime = audio.currentTime;
+                    videoActual.play(); audio.play();
+                  }
+                  buffering.setAttribute('visible', 'false');
+                }, 2000 + Math.random() * 2000);
+              } else if (dado > 0.4) {
+                cambiarCalidad(vBaja, 'CONEXION: CRITICA\nCalidad: 144p\nAudio: Robotico', 500);
+              } else {
+                cambiarCalidad(vMedia, 'CONEXION: INESTABLE\nCalidad: 360p\nAudio: Filtrado', 1200);
+              }
+            }, 3000);
+          });
+
+          document.querySelector('#btn-optimo').addEventListener('click', function() {
+            isBrechaActive = false;
+            clearInterval(intervaloLag);
+            buffering.setAttribute('visible', 'false');
+            panel.setAttribute('color', '#00FF00');
+            cambiarCalidad(vAlta, 'CONEXION: 5G OPTIMA\nCalidad: 4K (UltraHD)\nAudio: Hi-Fi', 20000);
+          });
+        }
+      });
+    </script>
+</head>
+<body>
+    <a-scene gestor-simulacion>
+        <a-assets>
+            <video id="video-alta" src="resources/video/clase_final.mp4" loop crossorigin="anonymous" playsinline></video>
+            <video id="video-media" src="resources/video/clase_360p.mp4" loop crossorigin="anonymous" playsinline></video>
+            <video id="video-baja" src="resources/video/clase_144p.mp4" loop crossorigin="anonymous" playsinline></video>
+            
+            <audio id="audio-clase" src="resources/audio/audio_final.mp3" loop crossorigin="anonymous"></audio>
+        </a-assets>
+
+        <a-videosphere id="esfera-video" src="#video-alta" rotation="0 -90 0"></a-videosphere>
+
+        <a-box id="btn-start" position="0 1.5 -2" depth="0.1" height="0.5" width="2.2" color="#0055FF" class="interactivo">
+            <a-text value="MIRAR AQUI PARA ENTRAR" align="center" position="0 0 0.06" scale="0.7 0.7 0.7"></a-text>
+        </a-box>
+
+        <a-plane id="pantalla-buffering" position="0 1.6 -1.2" width="4" height="2.2" color="#000" opacity="0.9" visible="false">
+            <a-text value="CONEXION PERDIDA\nSincronizando flujo UDP..." align="center" position="0 0 0.1" width="3"></a-text>
+        </a-plane>
+
+        <a-entity id="consola-mandos" position="0 0.4 -1.5" rotation="-45 0 0" visible="false">
+            <a-text id="panel-red" value="CONEXION: 5G OPTIMA\nCalidad: 4K (UltraHD)\nAudio: Hi-Fi" position="-1.2 0.8 0" color="#00FF00" width="3.5"></a-text>
+            
+            <a-box id="btn-optimo" position="-0.7 0.3 0" depth="0.05" height="0.35" width="1.2" color="#00FF00" class="oculto-inicial">
+                <a-text value="Conectar 5G" align="center" position="0 0 0.03" color="#000" scale="0.5 0.5 0.5"></a-text>
+            </a-box>
+            <a-box id="btn-brecha" position="0.7 0.3 0" depth="0.05" height="0.35" width="1.2" color="#FF0000" class="oculto-inicial">
+                <a-text value="Brecha Digital" align="center" position="0 0 0.03" color="#FFF" scale="0.5 0.5 0.5"></a-text>
+            </a-box>
+
+            <a-box id="btn-pause" position="-0.8 -0.15 0" depth="0.05" height="0.3" width="0.8" color="#FFA500" class="oculto-inicial">
+                <a-text value="Pausar" align="center" position="0 0 0.03" color="#000" scale="0.5 0.5 0.5"></a-text>
+            </a-box>
+            <a-box id="btn-vol-menos" position="0.1 -0.15 0" depth="0.05" height="0.3" width="0.4" color="#444" class="oculto-inicial">
+                <a-text value="Vol -" align="center" position="0 0 0.03" color="#FFF" scale="0.5 0.5 0.5"></a-text>
+            </a-box>
+            <a-box id="btn-vol-mas" position="0.6 -0.15 0" depth="0.05" height="0.3" width="0.4" color="#444" class="oculto-inicial">
+                <a-text value="Vol +" align="center" position="0 0 0.03" color="#FFF" scale="0.5 0.5 0.5"></a-text>
+            </a-box>
+        </a-entity>
+
+        <a-camera position="0 1.6 0">
+            <a-cursor 
+                id="cursor-visual"
+                color="#FFEB3B" 
+                raycaster="objects: .interactivo"
+                fuse="true" 
+                fuse-timeout="1500"
+                animation__fusing="property: scale; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1500; startEvents: fusing"
+                animation__mouseleave="property: scale; to: 1 1 1; dur: 300; startEvents: mouseleave">
+            </a-cursor>
+        </a-camera>
+    </a-scene>
+</body>
+</html>
