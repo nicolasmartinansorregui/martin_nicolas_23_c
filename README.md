@@ -28,7 +28,7 @@ El simulador incorpora tres pilares de las telecomunicaciones actuales:
 
 ### 1. Adaptive Bitrate Streaming (ABS)
 Se han generado tres perfiles de calidad para el vídeo 360:
-* **Alta (4K):** Simula una conexión de fibra óptica/5G estable.
+* **Alta (1080p):** Simula una conexión de fibra óptica/5G estable.
 * **Media (360p):** Simula congestión moderada.
 * **Baja (144p):** Simula condiciones de red críticas.
 El sistema conmuta dinámicamente entre estos perfiles manteniendo la sincronización temporal.
