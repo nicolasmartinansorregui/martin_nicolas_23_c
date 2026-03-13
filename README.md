@@ -7,6 +7,16 @@ El objetivo es doble:
 1. **Concienciación Social:** Visibilizar la brecha digital y cómo la falta de una conexión estable excluye al alumno del flujo de aprendizaje.
 2. **Demostración Técnica:** Simular comportamientos reales de redes de telecomunicaciones (latencia, jitter, pérdida de paquetes y adaptación de bitrate).
 
+## Visión de Futuro: Telepresencia y Equidad
+La idea central de este proyecto es que, en un futuro cercano, el acceso a la educación no dependa de la ubicación física. La **Realidad Virtual y la Telepresencia** permitirán que cualquier alumno asista a una clase magistral desde su hogar, eliminando barreras geográficas y reduciendo la huella de carbono del transporte.
+
+Sin embargo, para que esta democratización del conocimiento sea real, es imperativo **subsanar la brecha digital**. Un sistema de teleeducación inmersivo solo es justo si:
+1. **Infraestructura Universal:** El despliegue de redes 5G/6G llega a zonas rurales y desfavorecidas para evitar la exclusión.
+2. **Calidad de Servicio (QoS):** Se garantiza una calidad mínima de recursos (audio y vídeo) para que la experiencia pedagógica sea efectiva para todos los usuarios, independientemente de su nivel socioeconómico.
+3. **Acceso a Hardware:** El desarrollo de estándares abiertos (como WebXR, utilizado en este proyecto) permite el uso de recursos existentes (smartphones) sin necesidad de hardware propietario costoso.
+
+Como ingenieros de telecomunicaciones, nuestra responsabilidad no es solo aumentar la velocidad de transmisión, sino asegurar que la tecnología sea un puente y no un muro.
+
 ## Tecnologías Utilizadas
 - **A-Frame (WebXR):** Framework para la renderización de la escena 3D y el video 360 en el navegador.
 - **FFmpeg:** Procesado y transcodificación de vídeo para generar los distintos niveles de calidad (Adaptive Bitrate).
@@ -32,7 +42,7 @@ Mediante un filtro de paso bajo (`BiquadFilterNode`), el audio se degrada dinám
 ## Cómo Ejecutarlo
 El proyecto está optimizado para su visualización en dispositivos móviles con carcasas de Realidad Virtual (VR).
 
-1.  **Acceso:** Entre en el siguiente enlace: [PEGA AQUÍ TU URL DE GITHUB PAGES]
+1.  **Acceso:** Entre en el siguiente enlace: https://nicolasmartinansorregui.github.io/martin_nicolas_23_c/
 2.  **Modo VR:** Pulse el icono de las gafas en la esquina inferior derecha.
 3.  **Interacción (Gaze):** No se requieren mandos. La interacción se basa en la **mirada (fusing cursor)**. Mantenga la vista sobre los botones del panel de control para activarlos.
 4.  **Ubicación de controles:** Los mandos de red y volumen se encuentran situados a los "pies" del usuario para no obstruir el campo visual de la clase.
@@ -48,7 +58,7 @@ El proyecto está optimizado para su visualización en dispositivos móviles con
 
 ## Bibliografía y Referencias
 
-## 📚 Bibliografía y Referencias
+## Bibliografía y Referencias
 
 [1] A-Frame Documentation, "Cursor Component & Gaze-based Interaction," [En línea]. Disponible en: https://aframe.io/docs/1.4.0/components/cursor.html.
 
