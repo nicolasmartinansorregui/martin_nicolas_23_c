@@ -1,19 +1,19 @@
-# Simulador de Brecha Digital en Entornos Educativos VR 🎓🌐
+# Simulador de Brecha Digital en Entornos Educativos VR
 
 Este proyecto es una simulación inmersiva desarrollada en **WebXR** (A-Frame) que analiza el impacto de la conectividad y los protocolos de red en la teleducación. Permite experimentar en primera persona cómo las limitaciones técnicas de la red afectan a la recepción de contenidos académicos en entornos de Realidad Virtual.
 
-## 🚀 Propósito del Proyecto
+## Propósito del Proyecto
 El objetivo es doble:
 1. **Concienciación Social:** Visibilizar la brecha digital y cómo la falta de una conexión estable excluye al alumno del flujo de aprendizaje.
 2. **Demostración Técnica:** Simular comportamientos reales de redes de telecomunicaciones (latencia, jitter, pérdida de paquetes y adaptación de bitrate).
 
-## 🛠️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 - **A-Frame (WebXR):** Framework para la renderización de la escena 3D y el video 360 en el navegador.
 - **FFmpeg:** Procesado y transcodificación de vídeo para generar los distintos niveles de calidad (Adaptive Bitrate).
 - **Web Audio API:** Manipulación de señales de audio en tiempo real mediante nodos de filtrado digital.
 - **JavaScript (Vanilla):** Lógica de control de estados y sincronización de medios.
 
-## 📡 Implementación Técnica
+## Implementación Técnica
 El simulador incorpora tres pilares de las telecomunicaciones actuales:
 
 ### 1. Adaptive Bitrate Streaming (ABS)
@@ -29,7 +29,7 @@ A diferencia del streaming bajo demanda (TCP), esta simulación emula una clase 
 ### 3. Procesado de Audio (Voz Robótica)
 Mediante un filtro de paso bajo (`BiquadFilterNode`), el audio se degrada dinámicamente según el estado de la red, emulando la reducción del ancho de banda disponible para el códec de voz.
 
-## 👓 Cómo Ejecutarlo
+## Cómo Ejecutarlo
 El proyecto está optimizado para su visualización en dispositivos móviles con carcasas de Realidad Virtual (VR).
 
 1.  **Acceso:** Entre en el siguiente enlace: [PEGA AQUÍ TU URL DE GITHUB PAGES]
@@ -37,7 +37,7 @@ El proyecto está optimizado para su visualización en dispositivos móviles con
 3.  **Interacción (Gaze):** No se requieren mandos. La interacción se basa en la **mirada (fusing cursor)**. Mantenga la vista sobre los botones del panel de control para activarlos.
 4.  **Ubicación de controles:** Los mandos de red y volumen se encuentran situados a los "pies" del usuario para no obstruir el campo visual de la clase.
 
-## 📁 Estructura del Repositorio
+## Estructura del Repositorio
 ```text
 ├── index.html              # Código fuente principal (Lógica y Escena)
 ├── README.md               # Documentación técnica
@@ -46,16 +46,18 @@ El proyecto está optimizado para su visualización en dispositivos móviles con
     └── audio/              # Pista de audio maestra
 ```
 
+## Bibliografía y Referencias
+
 ## 📚 Bibliografía y Referencias
 
-[1] A-Frame Documentation, "Entity-Component System and WebXR standards," [En línea]. Disponible en: https://aframe.io/docs/1.4.0/introduction/.
+[1] A-Frame Documentation, "Cursor Component & Gaze-based Interaction," [En línea]. Disponible en: https://aframe.io/docs/1.4.0/components/cursor.html.
 
-[2] MDN Web Docs, "Web Audio API Concepts and usage," Mozilla Foundation. [En línea]. Disponible en: https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API.
+[2] MDN Web Docs, "BiquadFilterNode: Digital biquad filter implementation," Mozilla Foundation. [En línea]. Disponible en: https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.
 
-[3] R. Pantos y W. May, "HTTP Live Streaming," RFC 8216, Apple Inc., 2017. [En línea]. Disponible en: https://datatools.ietf.org/html/rfc8216. (Referencia para la lógica de Adaptive Bitrate).
+[3] R. Pantos y W. May, "HTTP Live Streaming: Variable Bit Rate (VBR) Encoding," RFC 8216, Section 6.2.2. [En línea]. Disponible en: https://datatracker.ietf.org/doc/html/rfc8216#section-6.2.2.
 
-[4] WebXR Device API, "Spatial Tracking and Gaze-based Interaction," W3C Recommendation. [En línea]. Disponible en: https://www.w3.org/TR/webxr/.
+[4] GitHub Docs, "Configuring a publishing source for your GitHub Pages site," GitHub. [En línea]. Disponible en: https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site.
 
-[5] FFmpeg Developers, "FFmpeg Documentation: Video Transcoding and Scaling," [En línea]. Disponible en: https://ffmpeg.org/documentation.html.
+[5] FFmpeg Documentation, "Video Rescaling and Pixel Format conversion," [En línea]. Disponible en: https://ffmpeg.org/ffmpeg-scaler.html.
 
 [6] Lex Fridman, "MIT Sloan: Intro to Machine Learning (in 360/VR)" YouTube, [Video en línea]. Disponible en: https://www.youtube.com/watch?v=s3MuSOl1Rog&t=366s.
