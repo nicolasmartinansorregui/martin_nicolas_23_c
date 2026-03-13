@@ -58,8 +58,6 @@ El proyecto está optimizado para su visualización en dispositivos móviles con
 
 ## Bibliografía y Referencias
 
-## Bibliografía y Referencias
-
 [1] A-Frame Documentation, "Cursor Component & Gaze-based Interaction," [En línea]. Disponible en: https://aframe.io/docs/1.4.0/components/cursor.html.
 
 [2] MDN Web Docs, "BiquadFilterNode: Digital biquad filter implementation," Mozilla Foundation. [En línea]. Disponible en: https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode.
